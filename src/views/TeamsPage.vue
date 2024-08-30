@@ -1,12 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
-import SidebarLayout from "@/layouts/SidebarLayout.vue";
-import CafeCard from "@/components/CafeCard.vue";
-import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
-import BaseContainer from "@/components/base/BaseContainer.vue";
-import BaseForm from "@/components/base/BaseForm.vue";
-import BaseInput from "@/components/base/BaseInput.vue";
-import BaseImage from "@/components/base/BaseImage.vue";
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 const userSearch = ref({
   search: "",
 });
@@ -47,13 +42,11 @@ const cards = [
 </script>
 
 <template>
-  <SidebarLayout>
-    <template v-slot:main>
-      <BaseContainer>
-        <v-container>
+  <div class="base">
+        <v-container fluid>
           <v-row justify="center">
             <v-col class="v-col-auto">
-              <h2 class="mb-4">Отбори</h2>
+              <h2 :class="mobile?'':'mb-4'">Отбори</h2>
             </v-col>
           </v-row>
           <v-row justify="center">
@@ -66,7 +59,7 @@ const cards = [
                 variant="solo"
                 hide-details
                 single-line
-                width="400px"
+                :width="mobile?'300px':'400px'"
                 clearable
                 rounded
                 v-model="userSearch.search"
@@ -78,7 +71,7 @@ const cards = [
 
         <v-container fluid>
           <v-row>
-            <v-col v-for="card in cards" :key="card.title" :cols="3">
+            <v-col v-for="card in cards" :key="card.title" :cols="mobile? 6: 3">
               <v-hover>
                 <template v-slot:default="{ isHovering, props }">
                   <v-card
@@ -107,9 +100,8 @@ const cards = [
             </v-col>
           </v-row>
         </v-container>
-      </BaseContainer>
-    </template>
-  </SidebarLayout>
+      
+  </div>
 </template>
 
 <style lang="sass" scoped>

@@ -1,29 +1,34 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
 // import { useFirebaseAuth } from 'vuefire'
-import AppSideBar from "./components/AppSideBar.vue";
-import AppLayout from "./layouts/AppLayout.vue";
-
+// import AppSideBar from "./components/AppSideBar.vue";
+// import AppLayout from "./layouts/AppLayout.vue";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
 const route = useRoute();
 // const auth = useFirebaseAuth()
 </script>
 
-<template>
+<!-- <template>
   <AppLayout>
     <template v-slot:topbar>
       <AppSideBar />
     </template>
     <template v-slot:content>
-      <!-- <div class="test"> -->
+       <div class="test">
       <Suspense class="base">
         <RouterView :key="route.fullPath" />
         <template v-slot:fallback>
           <p>Content not found. Contact your developer for more info.</p>
         </template>
       </Suspense>
-      <!-- </div> -->
+       </div> 
     </template>
   </AppLayout>
+</template> -->
+<template>
+  <DefaultLayout>
+    <RouterView :key="route.fullPath" />
+  </DefaultLayout>
 </template>
 
 <style lang="sass" scoped>
@@ -42,9 +47,12 @@ const route = useRoute();
 //   /* Additional styling for your footer content */
 // }
 .base
+    height: 100vh
     background-image: url("@/assets/background.jpg")
+    // background-size: cover
+    // background-position: right
+    
     background-size: cover
-    background-position: right
 
 // .test
 //     opacity: 0.2

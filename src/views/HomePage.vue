@@ -1,11 +1,8 @@
 <script setup>
-import { ref, computed } from "vue";
-import SidebarLayout from "@/layouts/SidebarLayout.vue";
+import { ref } from 'vue'
 import BaseContainer from "@/components/base/BaseContainer.vue";
-import BaseForm from "@/components/base/BaseForm.vue";
-import BaseInput from "@/components/base/BaseInput.vue";
-import BaseImage from "@/components/base/BaseImage.vue";
-
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 const items = [
   {
     src: "https://images.pexels.com/photos/797900/pexels-photo-797900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -20,30 +17,43 @@ const items = [
     src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
   },
 ];
+const dialogRules = ref(false);
+const dialogTechRules = ref(false);
 </script>
 
 <template>
-  <SidebarLayout>
-    <template v-slot:main>
-      <BaseContainer>
-        <v-carousel
-    hide-delimiters
-    show-arrows="hover"
-        width="200"
-  >
-    <v-carousel-item
-      v-for="(item, i) in items"
-      :key="i"
-      :src="item.src"
-      cover
-      class="carousel-item"
-    >
-    </v-carousel-item>
-  </v-carousel>
-        <v-card
-          class="mx-auto mt-10"
+  <div class="base">
+      <!-- Carousel Section -->
+      <v-container fluid class="px-4">
+        <v-row>
+          <v-col cols="12" v-if="!mobile">
+            <v-carousel
+              hide-delimiters
+              show-arrows="hover"
+              width="200"
+            >
+              <v-carousel-item
+                v-for="(item, i) in items"
+                :key="i"
+                :src="item.src"
+                cover
+                class="carousel-item"
+              >
+              </v-carousel-item>
+             </v-carousel>
+          </v-col>
+        </v-row>
+      </v-container>
+      <!-- Main Content Section -->
+      <v-container fluid>
+        <v-row dense>
+          <!-- Prize Information -->
+          <v-col class="v-col-12">
+            <v-card
+          class="mx-auto"
+          :class="mobile ? '' : 'mt-10'"
+          :width="mobile ? 350 : 800"
           prepend-icon="mdi-cash" 
-          width="800"
           color="#253C59"
           rounded="lg"
           style="opacity: 0.95"
@@ -68,7 +78,7 @@ const items = [
                 <v-icon color="#debd68" style="margin-right: 8px;">mdi-trophy</v-icon>
                 <strong style="color: #debd68; margin-right: 8px;">1-во място: </strong>  500 лв, купа
                 и медали
-              </li style="display: flex; align-items: center; margin-bottom: 10px;">
+              </li>
               <li style="display: flex; align-items: center; margin-bottom: 10px;">
                 <v-icon color="#d8d8d8" style="margin-right: 8px;">mdi-trophy</v-icon>
                 <strong style="color: #d8d8d8; margin-right: 8px;">2-ро място: </strong> 250 лв, купа
@@ -86,9 +96,14 @@ const items = [
             </ul>
           </v-card-text>
         </v-card>
-        <v-card
-          class="mx-auto mt-10 card-opacity"
-          width="800"
+          </v-col>
+        </v-row>
+        <v-row dense>
+          <!-- Prize Information -->
+          <v-col class="v-col-12">
+            <v-card
+          class="mx-auto card-opacity mt-10"
+          :width="mobile ? 350 : 800"
           color="#253C59"
           rounded="lg"
           prepend-icon="mdi-human-greeting"
@@ -117,16 +132,35 @@ const items = [
             </div>
           </v-card-text>
         </v-card>
-        <div class="d-flex justify-center mt-10">
-          <v-btn color="#253C59" style="opacity: 0.95" @click="dialog = true" 
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <!-- Rules and Regulations Section -->
+      <v-container v-if="!mobile" fluid class="d-flex justify-center mt-10">
+        <v-btn color="#253C59" style="opacity: 0.95" @click="dialogRules = true" 
           >Правила на лигата</v-btn>
           
-        <v-btn color="#253C59" style="opacity: 0.95" @click="dialogRules = true" class="ml-4"
+        <v-btn color="#253C59" style="opacity: 0.95" @click="dialogTechRules = true" class="ml-4"
           >Спортно-технически правила</v-btn>
-        </div>
-      
-
-        <v-dialog v-model="dialog" max-width="600">
+      </v-container>
+      <v-container v-else fluid class=" mt-10 mx-auto" >
+        <v-row dense>
+          <v-col class="v-col-12 d-flex justify-center">
+            <v-btn color="#253C59" style="opacity: 0.95" @click="dialogRules = true" 
+          >Правила на лигата</v-btn>
+          </v-col>
+        
+        </v-row>
+        <v-row dense>
+          <v-col class="v-col-12 d-flex justify-center">
+        <v-btn color="#253C59" style="opacity: 0.95" @click="dialogTechRules = true" class=""
+          >Спортно-технически правила</v-btn>
+        </v-col>
+        </v-row>
+      </v-container>
+      <!-- Dialogs for Rules -->
+        <v-dialog v-model="dialogRules" max-width="600">
           <v-card>
             <v-card-title class="rules-title">Правила на лигата</v-card-title>
             <v-card-text class="rules-container">
@@ -212,7 +246,7 @@ const items = [
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogRules" max-width="600">
+        <v-dialog v-model="dialogTechRules" max-width="600">
           <v-card>
             <v-card-title class="rules-title">СПОРТНО-ТЕХНИЧЕСКИ ПРАВИЛА</v-card-title>
             <v-card-text class="rules-container">
@@ -301,21 +335,9 @@ const items = [
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </BaseContainer>
+  </div>
+      
     </template>
-  </SidebarLayout>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      dialog: false,
-      dialogRules: false,
-    };
-  },
-};
-</script>
 
 <style scoped lang="sass">
 
@@ -405,4 +427,6 @@ export default {
 .rules-section p 
   margin: 0
 
+.base
+ 
 </style>

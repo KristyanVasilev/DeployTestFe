@@ -20,11 +20,11 @@ export const useAuthStore = defineStore({
         // const user = await fetchWrapper.post(`${baseUrl}/authenticate`, { username, password });
         const headers = {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
         }
         axios({
           method: 'post',
-          url: 'http://185.80.1.231:70/api/v1/seasons/test',
+          // url: 'http://185.80.1.231:70/api/v1/seasons/test',
+          url:'https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/seasons/test',
           data: {},
           headers
         })

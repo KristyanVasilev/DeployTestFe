@@ -1,12 +1,6 @@
 <script setup>
-import { ref, computed } from "vue";
-import SidebarLayout from "@/layouts/SidebarLayout.vue";
-import CafeCard from "@/components/CafeCard.vue";
-import BaseCheckbox from "@/components/base/BaseCheckbox.vue";
-import BaseContainer from "@/components/base/BaseContainer.vue";
-import BaseForm from "@/components/base/BaseForm.vue";
-import BaseInput from "@/components/base/BaseInput.vue";
-import BaseImage from "@/components/base/BaseImage.vue";
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 const headers = [
   {
     align: "start",
@@ -15,7 +9,7 @@ const headers = [
     title: "Позиция",
   },
   { key: "team", title: "Отбор", sortable: false },
-  { key: "form", title: "Форма", sortable: false },
+ 
   { key: "matches", title: "М", sortable: false },
   { key: "wins", title: "П", sortable: false },
   { key: "draws", title: "Р", sortable: false },
@@ -23,7 +17,9 @@ const headers = [
   { key: "goals", title: "В/Д", sortable: false },
   { key: "goaldiff", title: "Г.Р.", sortable: false },
   { key: "points", title: "Т", sortable: false },
+  { key: "form", title: "Форма", sortable: false },
 ];
+
 const teams = [
   {
     position: "1",
@@ -169,11 +165,8 @@ const getPositionClass = (team) => {
 </script>
 
 <template>
-  <SidebarLayout>
-    <template v-slot:main>
-      <div class="d-flex align-center">
-      <BaseContainer>
-        
+      <div class="base">
+        <v-container fluid :class="mobile ? 'px-4':'px-10'">
           <v-data-table
             hide-default-footer
             :headers="headers"
@@ -197,7 +190,7 @@ const getPositionClass = (team) => {
                     {{ item.team }}
                   </span>
                 </td>
-                <td>{{ item.form }}</td>
+                
                 <td>{{ item.matches }}</td>
                 <td>{{ item.wins }}</td>
                 <td>{{ item.draws }}</td>
@@ -205,18 +198,22 @@ const getPositionClass = (team) => {
                 <td>{{ item.goals }}</td>
                 <td>{{ item.goaldiff }}</td>
                 <td>{{ item.points }}</td>
+                <td >{{ item.form }}</td>
               </tr>
             </template>
           </v-data-table>
+        </v-container>
         
-      </BaseContainer>
+          
+        
     </div>
-    </template>
-  </SidebarLayout>
+    
 </template>
 
 <style scoped lang="sass">
 .v-table
   background-color: #253C59 !important
   opacity: 0.8
+.base
+
 </style>
