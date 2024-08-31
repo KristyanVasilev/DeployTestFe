@@ -10,7 +10,7 @@
     <Sidebar  :drawer="drawer" @update:drawer="drawer = $event" />
 
     <!-- Main content -->
-    <v-main>
+    <v-main @click.stop="drawer = false">
       <v-container fluid class="container">
         <slot></slot>
       </v-container>

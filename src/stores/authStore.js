@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 
 // import { fetchWrapper } from "@/helpers";
 // import { RouterView, useRouter } from 'vue-router'
-import router from "@/router";
+import router from '@/router'
 import { useAlertStore } from "@/stores/alertStore.js";
-import axios from "axios";
+import axios from 'axios'
 // const baseUrl =useRouter()`${import.meta.env.VITE_API_URL}/users`;
 // const router = useRouter();
 export const useAuthStore = defineStore({
@@ -19,15 +19,15 @@ export const useAuthStore = defineStore({
       try {
         // const user = await fetchWrapper.post(`${baseUrl}/authenticate`, { username, password });
         const headers = {
-          "Content-Type": "application/json",
-        };
+          'Content-Type': 'application/json',
+        }
         axios({
-          method: "get",
+          method: 'post',
           // url: 'http://185.80.1.231:70/api/v1/seasons/test',
-          url: "https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/players",
+          url:'https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/seasons/test',
           data: {},
-          headers,
-        });
+          headers
+        })
         const user = { username, password };
         if (username == "admin" && password == "admin") {
           // update pinia state

@@ -1,10 +1,31 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useMatchDataStore } from '@/stores/matchDataStore.js';
+import { storeToRefs } from 'pinia';
+import { debounce } from 'lodash';
 import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
-const userSearch = ref({
+const teamsSearch = ref({
   search: "",
 });
+const matchDataStore = useMatchDataStore();
+const { teams } = storeToRefs(matchDataStore);
+onMounted(async () => {
+  await matchDataStore.fetchTeams();
+});
+
+// Debounced search function
+const debouncedFetchTeams = debounce(async () => {
+  await matchDataStore.fetchTeams(teamsSearch.value.search);
+}, 300);
+
+// Watcher for teamSearch to trigger API call on change
+watch(
+  () => teamsSearch.value.search,
+  async (newSearch) => {
+    debouncedFetchTeams();
+  }
+);
 const cards = [
   {
     title: "Шампиони",
@@ -44,16 +65,14 @@ const cards = [
 <template>
   <div class="base">
         <v-container fluid>
-          <v-row justify="center">
+          <v-row justify="center  mt-12">
             <v-col class="v-col-auto">
-              <h2 :class="mobile?'':'mb-4'">Отбори</h2>
+              <v-icon icon="mdi-magnify" color="#1b1b1b" class="my-2 pl-6"></v-icon>
             </v-col>
-          </v-row>
-          <v-row justify="center">
             <v-col class="v-col-auto">
               <v-text-field
+                class="search-field"
                 :loading="loading"
-                prepend-icon="mdi-magnify"
                 density="compact"
                 label="Потърси отбор"
                 variant="solo"
@@ -62,7 +81,7 @@ const cards = [
                 :width="mobile?'300px':'400px'"
                 clearable
                 rounded
-                v-model="userSearch.search"
+                v-model="teamsSearch.search"
                 @click:append-inner="onClick"
               ></v-text-field>
             </v-col>
@@ -71,16 +90,17 @@ const cards = [
 
         <v-container fluid>
           <v-row>
-            <v-col v-for="card in cards" :key="card.title" :cols="mobile? 6: 3">
+            <v-col v-for="team in teams" :key="team.id" :cols="mobile? 6: 3">
               <v-hover>
                 <template v-slot:default="{ isHovering, props }">
                   <v-card
                   v-bind="props" 
                   rounded="shaped" 
                   link 
-                  href="http://localhost:3000/">
+                  :to="'/teams/' + team.id"
+                  >
                     <v-img
-                      :src="card.src"
+                      :src="team.logo || 'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/36581/optimized_large_thumb_stage.jpg'"
                       class="align-end"
                       gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                       height="300px"
@@ -90,7 +110,7 @@ const cards = [
                       <div class="text-background" :class="isHovering ? 'full-opacity' : 'half-opacity'">
                         <v-card-title
                           class="text-white card-text"
-                          v-text="card.title"
+                          v-text="team.name"
                         ></v-card-title>
                       </div>
                     </v-img>
@@ -112,4 +132,8 @@ const cards = [
   opacity: 0.9
 .half-opacity
   opacity: 0.8
+.search-field
+  opacity: 0.8
+.v-input__prepend > .v-icon
+  color: red
 </style>

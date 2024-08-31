@@ -4,18 +4,17 @@ import BaseContainer from "@/components/base/BaseContainer.vue";
 import { useDisplay } from 'vuetify'
 const { mobile } = useDisplay()
 const items = [
+{
+    src: "https://5.imimg.com/data5/MI/ON/MY-15351905/football-ground-flooring.jpg",
+  },
   {
     src: "https://images.pexels.com/photos/797900/pexels-photo-797900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     src: "https://images.pexels.com/photos/1378425/pexels-photo-1378425.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
-  {
-    src: "https://images.pexels.com/photos/1378425/pexels-photo-1378425.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  },
-  {
-    src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-  },
+ 
+  
 ];
 const dialogRules = ref(false);
 const dialogTechRules = ref(false);
@@ -23,34 +22,14 @@ const dialogTechRules = ref(false);
 
 <template>
   <div class="base">
-      <!-- Carousel Section -->
-      <v-container fluid class="px-4">
-        <v-row>
-          <v-col cols="12" v-if="!mobile">
-            <v-carousel
-              hide-delimiters
-              show-arrows="hover"
-              width="200"
-            >
-              <v-carousel-item
-                v-for="(item, i) in items"
-                :key="i"
-                :src="item.src"
-                cover
-                class="carousel-item"
-              >
-              </v-carousel-item>
-             </v-carousel>
-          </v-col>
-        </v-row>
-      </v-container>
+      
       <!-- Main Content Section -->
       <v-container fluid>
         <v-row dense>
           <!-- Prize Information -->
           <v-col class="v-col-12">
             <v-card
-          class="mx-auto"
+          class="mx-auto card-opacity"
           :class="mobile ? '' : 'mt-10'"
           :width="mobile ? 350 : 800"
           prepend-icon="mdi-cash" 
@@ -102,7 +81,8 @@ const dialogTechRules = ref(false);
           <!-- Prize Information -->
           <v-col class="v-col-12">
             <v-card
-          class="mx-auto card-opacity mt-10"
+          class="mx-auto card-opacity"
+          :class="mobile ? '' : 'mt-10'"
           :width="mobile ? 350 : 800"
           color="#253C59"
           rounded="lg"
@@ -120,7 +100,7 @@ const dialogTechRules = ref(false);
             </div>
             <div class="step" style="margin-top: 20px; margin-bottom: 20px;">
               <v-icon>mdi-soccer-field</v-icon>
-              <p>Свържи се с нас чрез нашата <a href="https://www.facebook.com/yourpage" target="_blank">фейсбук страница</a> или <a href="https://www.instagram.com/yourprofile" target="_blank">Instagram профил</a>. Ще ти помогнем с всичко, освен с избора на перфектния отбор... това е на теб! 😄</p>
+              <p>Свържи се с нас чрез нашата <a href="https://www.facebook.com/profile.php?id=61564968866344" target="_blank">фейсбук страница</a>. Ще ти помогнем с всичко, освен с избора на перфектния отбор... това е на теб! 😄</p>
             </div>
             <div class="step" style="margin-top: 20px; margin-bottom: 20px;">
               <v-icon>mdi-tshirt-crew</v-icon>
@@ -135,7 +115,27 @@ const dialogTechRules = ref(false);
           </v-col>
         </v-row>
       </v-container>
-
+      <!-- Carousel Section -->
+      <v-container fluid v-if="!mobile" class="px-4" max-width="1000px">
+        <v-row>
+          <v-col cols="12">
+            <v-carousel
+              hide-delimiters
+              show-arrows="hover"
+              width="200"
+            >
+              <v-carousel-item
+                v-for="(item, i) in items"
+                :key="i"
+                :src="item.src"
+                cover
+                class="carousel-item"
+              >
+              </v-carousel-item>
+             </v-carousel>
+          </v-col>
+        </v-row>
+      </v-container>
       <!-- Rules and Regulations Section -->
       <v-container v-if="!mobile" fluid class="d-flex justify-center mt-10">
         <v-btn color="#253C59" style="opacity: 0.95" @click="dialogRules = true" 
@@ -159,6 +159,7 @@ const dialogTechRules = ref(false);
         </v-col>
         </v-row>
       </v-container>
+      
       <!-- Dialogs for Rules -->
         <v-dialog v-model="dialogRules" max-width="600">
           <v-card>
@@ -166,7 +167,7 @@ const dialogTechRules = ref(false);
             <v-card-text class="rules-container">
     <div class="rules-section">
       <h4>Чл.1.</h4>
-      <p>Настоящите правила определят условията и реда за провеждане на Аматьорски футболна лига „MatchPro - Лига Дупница“ (Лигата), организиран от „Сепи Инвестмънт“ ООД, с ЕИК (ЕИК) („Организаторът“).</p>
+      <p>Настоящите правила определят условията и реда за провеждане на Аматьорски футболна лига „MatchPro - Лига Дупница“ (Лигата).</p>
     </div>
     
     <div class="rules-section">
@@ -240,7 +241,7 @@ const dialogTechRules = ref(false);
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="#FF5733" text @click="dialog = false"
+              <v-btn color="#FF5733" text @click="dialogRules = false"
                 >Затвори</v-btn
               >
             </v-card-actions>
@@ -329,7 +330,7 @@ const dialogTechRules = ref(false);
   </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="#FF5733" text @click="dialogRules = false"
+              <v-btn color="#FF5733" text @click="dialogTechRules = false"
                 >Затвори</v-btn
               >
             </v-card-actions>
@@ -427,6 +428,5 @@ const dialogTechRules = ref(false);
 .rules-section p 
   margin: 0
 
-.base
  
 </style>

@@ -47,13 +47,17 @@ const route = useRoute();
 //   /* Additional styling for your footer content */
 // }
 .base
-    height: 100vh
+    // height: 100vh
     background-image: url("@/assets/background.jpg")
     // background-size: cover
     // background-position: right
     
     background-size: cover
-
+    background-position: center center
+    background-repeat: no-repeat
+    background-attachment: fixed
+    min-height: 100vh
+    overflow-x: hidden
 // .test
 //     opacity: 0.2
 </style>

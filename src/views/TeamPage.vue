@@ -1,11 +1,19 @@
 <script setup>
 import { ref, computed } from "vue";
-import SidebarLayout from "@/layouts/SidebarLayout.vue";
-import BaseContainer from "@/components/base/BaseContainer.vue";
+import { useMatchDataStore } from '@/stores/matchDataStore.js';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router'
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
+const route = useRoute();  
 
-const userSearch = ref({
-  search: "",
+const matchDataStore = useMatchDataStore();
+const { players, team } = storeToRefs(matchDataStore);
+onMounted(async () => {
+  await matchDataStore.fetchInfoForTeam(route.params.id);
+  await matchDataStore.fetchPlayersForTeam(route.params.id);
 });
+
 
 const cards = [
   {
@@ -299,57 +307,83 @@ const cards = [
 
   // Add more players in the same format...
 ];
-  
+ 
 const selectedPlayer = ref(null);
 const isModalOpen = ref(false);
-
 function openModal(player) {
   selectedPlayer.value = player;
   isModalOpen.value = true;
 }
+function checkPosition(postionNumber) {
+  switch (postionNumber) {
+    case 1:
+      return "Вратар";
+      break;
+    case 2:
+      return "Защитник";
+      break;
+    case 3:
+      return "Халф";
+      break;
+    case 4:
+      return "Нападател";
+      break;
+    default:
+      return "Халф";
+      break;
+  }
+ 
+}
 </script>
 <template>
-  <SidebarLayout>
-    <template v-slot:main>
-      <BaseContainer>
-        <v-container>
-          <v-row justify="center">
+      <div class="base">
+      
+        <v-container fluid>
+          <v-card max-width="800px" class="mx-auto team-card">
+            <v-container fluid>
+              <v-row justify="center">
             <v-col class="v-col-auto">
-              <h2 class="mb-4">Играчи</h2>
+              <h1  :class="mobile?'':'mb-4'">{{team.name}}</h1>
             </v-col>
-          </v-row>
-          <v-row justify="center">
-            <v-col class="v-col-auto">
-              <v-text-field
-                :loading="loading"
-                prepend-icon="mdi-magnify"
-                density="compact"
-                label="Потърси играч"
-                variant="solo"
-                hide-details
-                single-line
-                width="400px"
-                clearable
-                rounded
-                v-model="userSearch.search"
-                @click:append-inner="onClick"
-              ></v-text-field>
+          </v-row>  
+            <v-row>
+          
+            <!-- Player Photo -->
+            <v-col cols="6">
+              <v-img :src="team.logo" height="300px" contain rounded="lg"></v-img>
             </v-col>
-          </v-row>
-        </v-container>
 
+            <!-- Personal Information -->
+            <v-col class="" cols="6">
+              <div>
+                <p><strong>Президент:</strong> {{ team.president }} </p>
+                <p><strong>Дата на създаване:</strong> {{ team.createdOn }}</p>
+                <p v-if="team.champion > 0"><strong>Титли:</strong> {{ team.champion}}</p>
+                <br>
+                <p><strong>Мачове:</strong> {{ team.matches }}</p>
+                <p><strong>Вкарани голове:</strong> {{ team.scoredGoals }}</p>
+                <p><strong>Допуснати голове:</strong> {{ team.considedGoals }}</p>
+                <p><strong>Жълти картони:</strong> {{ team.yellowCards }}</p>
+                <p><strong>Червени картони:</strong> {{ team.redCards }}</p>
+              </div>
+            </v-col>
+          </v-row></v-container>
+          </v-card>
+        
+          
+        </v-container>
         <v-container fluid>
           <v-row>
-            <v-col v-for="card in cards" :key="card.id" :cols="3">
+            <v-col v-for="player in players" :key="player.id" :cols="mobile? 6: 3">
               <v-hover>
                 <template v-slot:default="{ isHovering, props }">
                   <v-card
                   v-bind="props" 
                   rounded="shaped" 
                   link 
-                  @click="openModal(card)">
+                  @click="openModal(player)">
                     <v-img
-                      :src="card.src"
+                      :src="player.url"
                       class="align-end"
                       gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                       height="300px"
@@ -359,7 +393,7 @@ function openModal(player) {
                       <div class="text-background" :class="isHovering ? 'full-opacity' : 'half-opacity'">
                         <v-card-title
                           class="text-white card-text"
-                          v-text="`${card.firstName} ${card.lastName}`"
+                          v-text="`${player.firstName} ${player.lastName}`"
                         ></v-card-title>
                       </div>
                     </v-img>
@@ -377,7 +411,7 @@ function openModal(player) {
           <v-row>
             <!-- Player Photo -->
             <v-col cols="6">
-              <v-img :src="selectedPlayer.src" height="300px" contain rounded="lg"></v-img>
+              <v-img :src="selectedPlayer.url" height="300px" contain rounded="lg"></v-img>
             </v-col>
 
             <!-- Personal Information -->
@@ -389,7 +423,7 @@ function openModal(player) {
                 <p><strong>Тегло:</strong> {{ selectedPlayer.weight }} кг</p>
                 <p><strong>Номер:</strong> {{ selectedPlayer.number }}</p>
                 <p><strong>Активен:</strong> {{ selectedPlayer.isActive ? 'Да' : 'Не' }}</p>
-                <p><strong>Позиция:</strong> {{ selectedPlayer.position }}</p>
+                <p><strong>Позиция:</strong> {{ checkPosition(selectedPlayer.position) }}</p>
               </div>
             </v-col>
           </v-row>
@@ -448,98 +482,9 @@ function openModal(player) {
         
         </v-dialog>
         
-      </BaseContainer>
-    </template>
-  </SidebarLayout>
+      </div>
 </template>
-<!-- <template>
-  <SidebarLayout>
-    <template v-slot:main>
-      <BaseContainer>
-        <v-container>
-          <v-row justify="center">
-            <v-col class="v-col-auto">
-              <h2 class="mb-4">Играчи</h2>
-            </v-col>
-          </v-row>
-          <v-row justify="center">
-            <v-col class="v-col-auto">
-              <v-text-field
-                :loading="loading"
-                prepend-icon="mdi-magnify"
-                density="compact"
-                label="Потърси играч"
-                variant="solo"
-                hide-details
-                single-line
-                width="400px"
-                clearable
-                rounded
-                v-model="userSearch.search"
-                @click:append-inner="onClick"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
 
-        <v-container fluid>
-          <v-row>
-            <v-col v-for="card in cards" :key="card.firstName" :cols="3">
-              <v-hover>
-                <template v-slot:default="{ isHovering, props }">
-                  <v-card
-                  v-bind="props" 
-                  rounded="shaped" 
-                  link 
-                  @click="openModal(key)">
-                    <v-img
-                      :src="card.src"
-                      class="align-end"
-                      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                      height="300px"
-                      cover
-                    >
-                      <v-divider></v-divider>
-                      <div class="text-background" :class="isHovering ? 'full-opacity' : 'half-opacity'">
-                        <v-card-title
-                          class="text-white card-text"
-                          v-text="`${card.firstName} ${card.lastName}`"
-                        ></v-card-title>
-                      </div>
-                    </v-img>
-                  </v-card>
-                </template>
-              </v-hover>
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-dialog v-model="isModalOpen" max-width="600px">
-          <v-card>
-            <v-card-title>{{ selectedPlayer.firstName }} {{ selectedPlayer.lastName }}</v-card-title>
-            <v-card-subtitle>Позиция: {{ selectedPlayer.position }}</v-card-subtitle>
-            <v-card-text>
-              <div><strong>Дата на раждане:</strong> {{ selectedPlayer.dateOfBirth }}</div>
-              <div><strong>Височина:</strong> {{ selectedPlayer.height }} см</div>
-              <div><strong>Тегло:</strong> {{ selectedPlayer.weight }} кг</div>
-              <div><strong>Номер:</strong> {{ selectedPlayer.number }}</div>
-              <div><strong>Активен:</strong> {{ selectedPlayer.isActive ? 'Да' : 'Не' }}</div>
-              <v-divider class="my-2"></v-divider>
-              <div><strong>Общо мачове:</strong> {{ selectedPlayer.totalStats.matches }}</div>
-              <div><strong>Голове:</strong> {{ selectedPlayer.totalStats.goals }}</div>
-              <div><strong>Фалове:</strong> {{ selectedPlayer.totalStats.fouls }}</div>
-              <div><strong>Жълти картони:</strong> {{ selectedPlayer.totalStats.yellowCards }}</div>
-              <div><strong>Червени картони:</strong> {{ selectedPlayer.totalStats.redCards }}</div>
-              <div><strong>MVP:</strong> {{ selectedPlayer.totalStats.mvp }}</div>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="primary" @click="isModalOpen = false">Затвори</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </BaseContainer>
-    </template>
-  </SidebarLayout>
-</template> -->
 
 <style lang="sass" scoped>
 
@@ -548,5 +493,11 @@ function openModal(player) {
 .full-opacity
   opacity: 0.9
 .half-opacity
+  opacity: 0.8
+
+.team-card
+  background-color: #1b1b1b
+  color: #FFFFFF
+  font-weight:500
   opacity: 0.8
 </style>

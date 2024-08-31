@@ -62,7 +62,8 @@ const { mobile } = useDisplay()
   rail
   >
     <v-list>
-      <v-list-item to="/" prepend-avatar="@/assets/logo.png"></v-list-item>
+      <v-list-item to="/" prepend-avatar="@/assets/logo.jpeg">MatchPro</v-list-item>
+     
     </v-list>
 
     <v-divider></v-divider>
