@@ -6,34 +6,48 @@ export const useMatchDataStore = defineStore({
   id: "matchData",
   state: () => ({
     nextMatches: [],
+    totalNextMatches: [],
     pastMatches: [],
+    totalPastMatches: [],
     teams: [],
     players: [],
     team:[],
     standings:[]
   }),
   actions: {
-    async fetchNextMatches(searchQuery) {
+    async fetchNextMatches(searchQuery, page = 1, perPage = 10) {
       const alertStore = useAlertStore();
       try {
         const response = await axios.get(`https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/seasons/next-matches`, {
-          params: { Search: searchQuery },
+          params: 
+          { 
+            Search: searchQuery,
+            Page: page,
+            PerPage: perPage
+           },
           headers: { 'accept': 'text/plain' }
         });
-        this.nextMatches = response.data;
+        this.nextMatches = response.data.matches;
+        this.totalNextMatches = response.data.totalNextMatches;
       } catch (error) {
         alertStore.error("Failed to fetch next matches");
       }
     },
 
-    async fetchPastMatches(searchQuery) {
+    async fetchPastMatches(searchQuery, page = 1, perPage = 10) {
       const alertStore = useAlertStore();
       try {
         const response = await axios.get(`https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/seasons/past-matches`, {
-          params: { Search: searchQuery },
+          params: 
+          { 
+            Search: searchQuery,
+            Page: page,
+            PerPage: perPage
+          },
           headers: { 'accept': 'text/plain' }
         });
-        this.pastMatches = response.data;
+        this.pastMatches = response.data.matches;
+        this.totalPastMatches = response.data.totalPastMatches;
       } catch (error) {
         alertStore.error("Failed to fetch past matches");
       }

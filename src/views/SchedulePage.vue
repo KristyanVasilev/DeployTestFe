@@ -1,35 +1,49 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useMatchDataStore } from '@/stores/matchDataStore.js';
 import { storeToRefs } from 'pinia';
 import { useDisplay } from 'vuetify'
 import { debounce } from 'lodash';
 const { mobile } = useDisplay()
 const tab = ref(null);
-
 const teamSearch = ref({
   search: "",
 });
+// Pagination states
+const nextPagination = ref({ page: 1, itemsPerPage: 10 });
+const pastPagination = ref({ page: 1, itemsPerPage: 10 });
+
+
 const matchDataStore = useMatchDataStore();
-const { nextMatches, pastMatches } = storeToRefs(matchDataStore);
+const { nextMatches, pastMatches, totalNextMatches, totalPastMatches  } = storeToRefs(matchDataStore);
+// Fetch matches when the component is mounted
 onMounted(async () => {
-  await matchDataStore.fetchNextMatches();
-  await matchDataStore.fetchPastMatches();
+  await matchDataStore.fetchNextMatches(teamSearch.value.search, nextPagination.value.page, nextPagination.value.itemsPerPage);
+  await matchDataStore.fetchPastMatches(teamSearch.value.search, pastPagination.value.page, pastPagination.value.itemsPerPage);
 });
 
 // Debounced search function
 const debouncedFetchMatches = debounce(async () => {
-  await matchDataStore.fetchNextMatches(teamSearch.value.search);
-  await matchDataStore.fetchPastMatches(teamSearch.value.search);
+  await matchDataStore.fetchNextMatches(teamSearch.value.search, nextPagination.value.page, nextPagination.value.itemsPerPage);
+  await matchDataStore.fetchPastMatches(teamSearch.value.search, pastPagination.value.page, pastPagination.value.itemsPerPage);
 }, 300);
 
 // Watcher for teamSearch to trigger API call on change
 watch(
   () => teamSearch.value.search,
-  async (newSearch) => {
+  async () => {
     debouncedFetchMatches();
   }
 );
+// Watch pagination for next matches
+watch(nextPagination, async () => {
+  await matchDataStore.fetchNextMatches(teamSearch.value.search, nextPagination.value.page, nextPagination.value.itemsPerPage);
+},{deep:true});
+
+// Watch pagination for past matches
+watch(pastPagination, async () => {
+  await matchDataStore.fetchPastMatches(teamSearch.value.search, pastPagination.value.page, pastPagination.value.itemsPerPage);
+}, {deep:true});
 const pastMatchesHeaders = [
   {
     align: "start",
@@ -90,16 +104,18 @@ const getRowClass = (team) => {
         </v-container>
     <v-container fluid  :class="mobile ? 'px-4':'px-10'">
         <v-tabs fixed-tabs v-model="tab">
-          <v-tab  text="Предстоящи мачове" value="next"></v-tab>
-          <v-tab text="Изминали мачове" value="past"></v-tab>
+          <v-tab size="small" text="Предстоящи мачове" value="next"></v-tab>
+          <v-tab size="small" text="Изминали мачове" value="past"></v-tab>
         </v-tabs>
         <v-tabs-window v-model="tab">
         <v-tabs-window-item value="next">
-          <v-data-table
-            no-data-text="Не са открити мачове"
-            hide-default-footer
+          <v-data-table-server
+            class="next-matches-table"
             :headers="nextMatchesHeaders"
             :items="nextMatches"
+            :items-length="totalNextMatches"
+            no-data-text="Не са открити мачове"
+            @update:page="(page) => nextPagination.page = page"
           >
             <template v-slot:item="{ item }">
               <tr :style="getRowClass(item)">
@@ -130,15 +146,18 @@ const getRowClass = (team) => {
                 </td>
               </tr>
             </template>
-          </v-data-table>
+          </v-data-table-server>
         </v-tabs-window-item>
 
         <v-tabs-window-item value="past">
-          <v-data-table
-            no-data-text="Не са открити мачове"
-            hide-default-footer
+          <v-data-table-server
+            class="past-matches-table"
             :headers="pastMatchesHeaders"
             :items="pastMatches"
+            :items-length="totalPastMatches"
+            no-data-text="Не са открити мачове"
+            @update:page="(page) => pastPagination.page = page"
+          
           >
             <template v-slot:item="{ item }">
               <tr :style="getRowClass(item)">
@@ -173,7 +192,7 @@ const getRowClass = (team) => {
                 
               </tr>
             </template>
-          </v-data-table>
+          </v-data-table-server>
         </v-tabs-window-item>
 
       </v-tabs-window>
@@ -207,4 +226,9 @@ const getRowClass = (team) => {
 
 .search-field
   opacity: 0.8
+
+:deep(.v-data-table-footer__items-per-page)
+  display: none !important
+:deep(.v-data-table-footer)
+  padding:5px 4px 
 </style>

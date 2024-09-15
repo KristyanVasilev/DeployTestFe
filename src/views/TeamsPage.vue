@@ -19,6 +19,13 @@ const debouncedFetchTeams = debounce(async () => {
   await matchDataStore.fetchTeams(teamsSearch.value.search);
 }, 300);
 
+
+// Работи със статични изображения
+// const getImageUrl = (name) =>{
+//     const path = new URL(`@/assets/teamLogos`, import.meta.url);
+//     if(name == null) return false;
+//     return `${path}/${name}`
+// }
 // Watcher for teamSearch to trigger API call on change
 watch(
   () => teamsSearch.value.search,
@@ -99,6 +106,7 @@ const cards = [
                   link 
                   :to="'/teams/' + team.id"
                   >
+                  <!-- :src="team.logo || 'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/36581/optimized_large_thumb_stage.jpg'" -->
                     <v-img
                       :src="team.logo || 'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/36581/optimized_large_thumb_stage.jpg'"
                       class="align-end"
@@ -136,4 +144,11 @@ const cards = [
   opacity: 0.8
 .v-input__prepend > .v-icon
   color: red
+.card-text
+  font-size: small !important
+
+
+
+// .v-field__input
+//   font-size: small !important
 </style>

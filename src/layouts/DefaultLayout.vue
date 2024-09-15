@@ -7,10 +7,11 @@
     </v-app-bar>
 
     <!-- Sidebar -->
-    <Sidebar  :drawer="drawer" @update:drawer="drawer = $event" />
+    <Sidebar  :drawer="drawer" @update:drawer="drawer = false" />
 
     <!-- Main content -->
-    <v-main @click.stop="drawer = false">
+    <!-- @click.stop="drawer = false" -->
+    <v-main >
       <v-container fluid class="container">
         <slot></slot>
       </v-container>

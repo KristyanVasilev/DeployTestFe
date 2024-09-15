@@ -360,11 +360,11 @@ function checkPosition(postionNumber) {
                 <p><strong>Дата на създаване:</strong> {{ team.createdOn }}</p>
                 <p v-if="team.champion > 0"><strong>Титли:</strong> {{ team.champion}}</p>
                 <br>
-                <p><strong>Мачове:</strong> {{ team.matches }}</p>
-                <p><strong>Вкарани голове:</strong> {{ team.scoredGoals }}</p>
-                <p><strong>Допуснати голове:</strong> {{ team.considedGoals }}</p>
-                <p><strong>Жълти картони:</strong> {{ team.yellowCards }}</p>
-                <p><strong>Червени картони:</strong> {{ team.redCards }}</p>
+                <p><strong>Мачове:</strong> {{ team.totalStats?.matches }}</p>
+                <p><strong>Вкарани голове:</strong> {{ team.totalStats?.scoredGoals }}</p>
+                <p><strong>Допуснати голове:</strong> {{ team.totalStats?.considedGoals}}</p>
+                <p><strong>Жълти картони:</strong> {{ team.totalStats?.yellowCards }}</p>
+                <p><strong>Червени картони:</strong> {{ team.totalStats?.redCards }}</p>
               </div>
             </v-col>
           </v-row></v-container>
@@ -416,11 +416,19 @@ function checkPosition(postionNumber) {
 
             <!-- Personal Information -->
             <v-col class="mt-14" cols="6">
+               <!-- Close Button -->
+          <v-btn
+            icon
+            class="close-btn"
+            @click="isModalOpen = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
               <div>
                 <p><strong>Име:</strong> {{ selectedPlayer.firstName }} {{ selectedPlayer.lastName }}</p>
-                <p><strong>Дата на раждане:</strong> {{ selectedPlayer.dateOfBirth.slice(0,10) }}</p>
-                <p><strong>Височина:</strong> {{ selectedPlayer.height }} см</p>
-                <p><strong>Тегло:</strong> {{ selectedPlayer.weight }} кг</p>
+                <p><strong>Възраст:</strong> {{ selectedPlayer.age == null ? "Н/И" : selectedPlayer.age }}</p>
+                <p><strong>Височина:</strong> {{ selectedPlayer.height > 230 ? "Н/И" : selectedPlayer.height}} см</p>
+                <p><strong>Тегло:</strong> {{ selectedPlayer.weight > 178 ? "Н/И" : selectedPlayer.weight }} кг</p>
                 <p><strong>Номер:</strong> {{ selectedPlayer.number }}</p>
                 <p><strong>Активен:</strong> {{ selectedPlayer.isActive ? 'Да' : 'Не' }}</p>
                 <p><strong>Позиция:</strong> {{ checkPosition(selectedPlayer.position) }}</p>
@@ -500,4 +508,13 @@ function checkPosition(postionNumber) {
   color: #FFFFFF
   font-weight:500
   opacity: 0.8
+
+.card-text
+  font-size: small !important
+
+.close-btn
+  position: absolute
+  top: 10px
+  right: 10px
+  z-index: 10
 </style>

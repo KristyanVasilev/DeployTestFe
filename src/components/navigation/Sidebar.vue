@@ -22,24 +22,28 @@ const { mobile } = useDisplay()
         title="Начало"
         value="home"
         to="/"
+        @click="$emit('update:drawer')"
       ></v-list-item>
       <v-list-item
         prepend-icon="mdi-trophy"
         title="Класиране"
         value="ranking"
         to="/ranking"
+        @click="$emit('update:drawer')"
       ></v-list-item>
       <v-list-item
         prepend-icon="mdi-calendar"
         title="Програма"
         value="schedule"
         to="/schedule"
+        @click="$emit('update:drawer')"
       ></v-list-item>
       <v-list-item
         prepend-icon="mdi-account-group"
         title="Отбори"
         value="teams"
         to="/teams"
+        @click="$emit('update:drawer')"
       ></v-list-item>
       <v-list-item
         v-if="authStore.user"
