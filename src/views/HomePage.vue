@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import BaseContainer from "@/components/base/BaseContainer.vue";
 import { useDisplay } from "vuetify";
+import amigoLogo from '@/assets/Amigo_Logo.png';
+import pmSportLogo from '@/assets/pmsport.jpg';
 const { mobile } = useDisplay();
 const items = [
   {
@@ -16,11 +18,12 @@ const items = [
 ];
 const dialogRules = ref(false);
 const dialogTechRules = ref(false);
-const getImageUrl = (name) => {
-  const path = new URL(import.meta.url);
-  if (name == null) return false;
-  return `${path}/${name}`;
-};
+// ne raboti na prod
+// const getImageUrl = (name) => {
+//   const path = new URL('@/assets',import.meta.url);
+//   if (name == null) return false;
+//   return `${path}/${name}`;
+// };
 </script>
 
 <template>
@@ -47,7 +50,7 @@ const getImageUrl = (name) => {
                 <v-img
                   height="200px"
                   style="background-color: white"
-                  :src="getImageUrl('Amigo_Logo.png')"
+                  :src="amigoLogo"
                 ></v-img>
               </a>
             </div>
@@ -71,7 +74,7 @@ const getImageUrl = (name) => {
                 <v-img
                   height="200px"
                   style="background-color: white"
-                  :src="getImageUrl('pmsport.jpg')"
+                  :src="pmSportLogo"
                 ></v-img>
               </a>
             </div>
