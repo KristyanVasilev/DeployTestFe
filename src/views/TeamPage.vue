@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useMatchDataStore } from '@/stores/matchDataStore.js';
-import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router'
-import { useDisplay } from 'vuetify'
-const { mobile } = useDisplay()
-const route = useRoute();  
+import { useMatchDataStore } from "@/stores/matchDataStore.js";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+import { useDisplay } from "vuetify";
+const { mobile } = useDisplay();
+const route = useRoute();
 
 const matchDataStore = useMatchDataStore();
 const { players, team } = storeToRefs(matchDataStore);
@@ -14,10 +14,9 @@ onMounted(async () => {
   await matchDataStore.fetchPlayersForTeam(route.params.id);
 });
 
-
 const cards = [
   {
-    id:1,
+    id: 1,
     firstName: "Иван",
     lastName: "Иванов",
     matchProIndex: 0,
@@ -35,7 +34,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -48,12 +47,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:2,
+    id: 2,
     firstName: "Петър",
     lastName: "Василев",
     matchProIndex: 0,
@@ -71,7 +70,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -84,12 +83,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:3,
+    id: 3,
     firstName: "Кристиян",
     lastName: "Василев",
     matchProIndex: 0,
@@ -107,7 +106,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -120,12 +119,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:4,
+    id: 4,
     firstName: "Борис",
     lastName: "Борисов",
     matchProIndex: 0,
@@ -143,7 +142,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -156,12 +155,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:5,
+    id: 5,
     firstName: "Васил",
     lastName: "Василев",
     matchProIndex: 0,
@@ -179,7 +178,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -192,12 +191,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:6,
+    id: 6,
     firstName: "Мартин",
     lastName: "Мартинов",
     matchProIndex: 0,
@@ -215,7 +214,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -228,12 +227,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:7,
+    id: 7,
     firstName: "Кристиян",
     lastName: "Василев",
     matchProIndex: 0,
@@ -251,7 +250,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -264,12 +263,12 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
   {
-    id:8,
+    id: 8,
     firstName: "Петър",
     lastName: "Петров",
     matchProIndex: 0,
@@ -287,7 +286,7 @@ const cards = [
       yellowCards: 2,
       redCards: 0,
       ownGoals: 0,
-      mvp: 5
+      mvp: 5,
     },
     seasonStats: [
       {
@@ -300,14 +299,14 @@ const cards = [
         yellowCards: 2,
         redCards: 0,
         ownGoals: 0,
-        mvp: 5
-      }
-    ]
+        mvp: 5,
+      },
+    ],
   },
 
   // Add more players in the same format...
 ];
- 
+
 const selectedPlayer = ref(null);
 const isModalOpen = ref(false);
 function openModal(player) {
@@ -332,106 +331,154 @@ function checkPosition(postionNumber) {
       return "Халф";
       break;
   }
- 
 }
 </script>
 <template>
-      <div class="base">
-      
+  <div class="base">
+    <v-container fluid>
+      <v-card max-width="800px" class="mx-auto team-card">
         <v-container fluid>
-          <v-card max-width="800px" class="mx-auto team-card">
-            <v-container fluid>
-              <v-row justify="center">
+          <v-row justify="center">
             <v-col class="v-col-auto">
-              <h1  :class="mobile?'':'mb-4'">{{team.name}}</h1>
+              <h1 :class="mobile ? '' : 'mb-4'">{{ team.name }}</h1>
             </v-col>
-          </v-row>  
-            <v-row>
-          
+          </v-row>
+          <v-row>
             <!-- Player Photo -->
             <v-col cols="6">
-              <v-img :src="team.logo" height="300px" contain rounded="lg"></v-img>
+              <v-img
+                :src="team.logo"
+                height="300px"
+                contain
+                rounded="lg"
+              ></v-img>
             </v-col>
 
             <!-- Personal Information -->
             <v-col class="" cols="6">
               <div>
-                <p><strong>Президент:</strong> {{ team.president }} </p>
+                <p><strong>Президент:</strong> {{ team.president }}</p>
                 <p><strong>Дата на създаване:</strong> {{ team.createdOn }}</p>
-                <p v-if="team.champion > 0"><strong>Титли:</strong> {{ team.champion}}</p>
-                <br>
+                <p v-if="team.champion > 0">
+                  <strong>Титли:</strong> {{ team.champion }}
+                </p>
+                <br />
                 <p><strong>Мачове:</strong> {{ team.totalStats?.matches }}</p>
-                <p><strong>Вкарани голове:</strong> {{ team.totalStats?.scoredGoals }}</p>
-                <p><strong>Допуснати голове:</strong> {{ team.totalStats?.considedGoals}}</p>
-                <p><strong>Жълти картони:</strong> {{ team.totalStats?.yellowCards }}</p>
-                <p><strong>Червени картони:</strong> {{ team.totalStats?.redCards }}</p>
+                <p>
+                  <strong>Вкарани голове:</strong>
+                  {{ team.totalStats?.scoredGoals }}
+                </p>
+                <p>
+                  <strong>Допуснати голове:</strong>
+                  {{ team.totalStats?.considedGoals }}
+                </p>
+                <p>
+                  <strong>Жълти картони:</strong>
+                  {{ team.totalStats?.yellowCards }}
+                </p>
+                <p>
+                  <strong>Червени картони:</strong>
+                  {{ team.totalStats?.redCards }}
+                </p>
               </div>
             </v-col>
-          </v-row></v-container>
-          </v-card>
-        
-          
-        </v-container>
+          </v-row></v-container
+        >
+      </v-card>
+    </v-container>
+    <v-container fluid>
+      <v-row>
+        <v-col
+          v-for="player in players"
+          :key="player.id"
+          :cols="mobile ? 6 : 3"
+        >
+          <v-hover>
+            <template v-slot:default="{ isHovering, props }">
+              <v-card
+                v-bind="props"
+                rounded="shaped"
+                link
+                @click="openModal(player)"
+              >
+                <v-img
+                  :src="player.url"
+                  class="align-end"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="300px"
+                  cover
+                >
+                  <v-divider></v-divider>
+                  <div
+                    class="text-background"
+                    :class="isHovering ? 'full-opacity' : 'half-opacity'"
+                  >
+                    <v-card-title
+                      class="text-white card-text"
+                      v-text="`${player.firstName} ${player.lastName}`"
+                    ></v-card-title>
+                  </div>
+                </v-img>
+              </v-card>
+            </template>
+          </v-hover>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-dialog v-model="isModalOpen" max-width="800px">
+      <v-card>
+        <!-- First Row: Player Photo and Personal Information -->
         <v-container fluid>
-          <v-row>
-            <v-col v-for="player in players" :key="player.id" :cols="mobile? 6: 3">
-              <v-hover>
-                <template v-slot:default="{ isHovering, props }">
-                  <v-card
-                  v-bind="props" 
-                  rounded="shaped" 
-                  link 
-                  @click="openModal(player)">
-                    <v-img
-                      :src="player.url"
-                      class="align-end"
-                      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                      height="300px"
-                      cover
-                    >
-                      <v-divider></v-divider>
-                      <div class="text-background" :class="isHovering ? 'full-opacity' : 'half-opacity'">
-                        <v-card-title
-                          class="text-white card-text"
-                          v-text="`${player.firstName} ${player.lastName}`"
-                        ></v-card-title>
-                      </div>
-                    </v-img>
-                  </v-card>
-                </template>
-              </v-hover>
-            </v-col>
-          </v-row>
-        </v-container>
-        
-        <v-dialog v-model="isModalOpen" max-width="800px">
-          <v-card>
-  <!-- First Row: Player Photo and Personal Information -->
-  <v-container fluid>
           <v-row>
             <!-- Player Photo -->
             <v-col cols="6">
-              <v-img :src="selectedPlayer.url" height="300px" contain rounded="lg"></v-img>
+              <v-img
+                :src="selectedPlayer.url"
+                height="300px"
+                contain
+                rounded="lg"
+              ></v-img>
             </v-col>
 
             <!-- Personal Information -->
             <v-col class="mt-14" cols="6">
-               <!-- Close Button -->
-          <v-btn
-            icon
-            class="close-btn"
-            @click="isModalOpen = false"
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
+              <!-- Close Button -->
+              <v-btn icon class="close-btn" @click="isModalOpen = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
               <div>
-                <p><strong>Име:</strong> {{ selectedPlayer.firstName }} {{ selectedPlayer.lastName }}</p>
-                <p><strong>Възраст:</strong> {{ selectedPlayer.age == null ? "Н/И" : selectedPlayer.age }}</p>
-                <p><strong>Височина:</strong> {{ selectedPlayer.height > 230 ? "Н/И" : selectedPlayer.height}} см</p>
-                <p><strong>Тегло:</strong> {{ selectedPlayer.weight > 178 ? "Н/И" : selectedPlayer.weight }} кг</p>
+                <p>
+                  <strong>Име:</strong> {{ selectedPlayer.firstName }}
+                  {{ selectedPlayer.lastName }}
+                </p>
+                <p>
+                  <strong>Възраст:</strong>
+                  {{ selectedPlayer.age == null ? "Н/И" : selectedPlayer.age }}
+                </p>
+                <p>
+                  <strong>Височина:</strong>
+                  {{
+                    selectedPlayer.height > 230 ? "Н/И" : selectedPlayer.height
+                  }}
+                  см
+                </p>
+                <p>
+                  <strong>Тегло:</strong>
+                  {{
+                    selectedPlayer.weight > 178 ? "Н/И" : selectedPlayer.weight
+                  }}
+                  кг
+                </p>
                 <p><strong>Номер:</strong> {{ selectedPlayer.number }}</p>
-                <p><strong>Активен:</strong> {{ selectedPlayer.isActive ? 'Да' : 'Не' }}</p>
-                <p><strong>Позиция:</strong> {{ checkPosition(selectedPlayer.position) }}</p>
+                <p>
+                  <strong>Активен:</strong>
+                  {{ selectedPlayer.isActive ? "Да" : "Не" }}
+                </p>
+                <p>
+                  <strong>Позиция:</strong>
+                  {{ checkPosition(selectedPlayer.position) }}
+                </p>
               </div>
             </v-col>
           </v-row>
@@ -467,11 +514,14 @@ function checkPosition(postionNumber) {
                     <td>{{ selectedPlayer.totalStats.mvp }}</td>
                   </tr>
                   <!-- Season Stats Rows -->
-                  <tr v-for="season in selectedPlayer.seasonStats" :key="season.seasonName">
+                  <tr
+                    v-for="season in selectedPlayer.seasonStats"
+                    :key="season.seasonName"
+                  >
                     <td>
-                      <strong>{{ season.seasonName }}</strong><br />
-                      {{ season.startDate.slice(0,10) }}<br />
-                      {{ season.teamName }}
+                      <strong>{{ season.seasonName }}</strong
+                      ><br />
+                      {{ season.startDate.slice(0, 10) }}<br />
                     </td>
                     <td>{{ season.matches }}</td>
                     <td>{{ season.goals }}</td>
@@ -486,13 +536,10 @@ function checkPosition(postionNumber) {
             </v-col>
           </v-row>
         </v-container>
-          </v-card>
-        
-        </v-dialog>
-        
-      </div>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
-
 
 <style lang="sass" scoped>
 
