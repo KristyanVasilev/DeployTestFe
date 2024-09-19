@@ -2,8 +2,8 @@
 import { ref } from "vue";
 import BaseContainer from "@/components/base/BaseContainer.vue";
 import { useDisplay } from "vuetify";
-import amigoLogo from '@/assets/Amigo_Logo.png';
-import pmSportLogo from '@/assets/pmsport.jpg';
+import amigoLogo from "@/assets/Amigo_Logo.png";
+import pmSportLogo from "@/assets/pmsport.jpg";
 const { mobile } = useDisplay();
 const items = [
   {
@@ -14,6 +14,16 @@ const items = [
   },
   {
     src: "https://images.pexels.com/photos/1378425/pexels-photo-1378425.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  },
+];
+const sponsorsItems = [
+  {
+    src: amigoLogo,
+    url: "https://amigoleasing.bg/",
+  },
+  {
+    src: pmSportLogo,
+    url: "https://www.facebook.com/Pmsport.Gk",
   },
 ];
 const dialogRules = ref(false);
@@ -31,7 +41,6 @@ const dialogTechRules = ref(false);
     <!-- Sponsors section -->
     <v-container fluid>
       <v-row dense>
-        <!-- Prize Information -->
         <v-col class="v-col-12">
           <v-card
             class="mx-auto card-opacity"
@@ -59,15 +68,15 @@ const dialogTechRules = ref(false);
         <v-col class="v-col-12">
           <v-card
             class="mx-auto card-opacity"
-            :class="mobile ? '' : 'mt-10'"
+            :class="mobile ? '' : 'mt-2'"
             :width="mobile ? 350 : 800"
-            prepend-icon="mdi-handshake"
+           
             color="#253C59"
             rounded="lg"
             style="opacity: 0.95"
           >
             <template v-slot:title>
-              <span class="font-weight-black">С подкрепата на:</span>
+              <span class="font-weight-black"></span>
             </template>
             <div>
               <a href="https://www.facebook.com/Pmsport.Gk" target="_blank">
@@ -80,6 +89,80 @@ const dialogTechRules = ref(false);
             </div>
           </v-card>
         </v-col>
+        <!-- <v-col class="v-col-12">
+          <v-card
+            class="mx-auto card-opacity"
+            :class="mobile ? '' : 'mt-10'"
+            :width="mobile ? 350 : 800"
+            prepend-icon="mdi-handshake"
+            color="#253C59"
+            rounded="lg"
+            style="opacity: 0.95"
+          >
+            <template v-slot:title>
+              <span class="font-weight-black">С подкрепата на:</span>
+            </template>
+            <v-container fluid>
+              <v-row dense>
+              <v-col> <a href="https://amigoleasing.bg/" target="_blank">
+                <v-img
+                  height="200px"
+                  style="background-color: white"
+                  :src="amigoLogo"
+                ></v-img>
+              </a></v-col>
+              
+              </v-row>
+              <v-row dense>
+              
+              <v-col> <a href="https://www.facebook.com/Pmsport.Gk" target="_blank">
+                <v-img
+                  height="200px"
+                  style="background-color: white"
+                  :src="pmSportLogo"
+                ></v-img>
+              </a></v-col>
+              </v-row>
+            </v-container>
+            <div>
+             
+            </div>
+          </v-card>
+        </v-col>
+        <v-col class="v-col-12">
+          <v-card
+            class="mx-auto card-opacity"
+            :class="mobile ? '' : 'mt-10'"
+            :width="mobile ? 350 : 800"
+            prepend-icon="mdi-handshake"
+            color="#253C59"
+            rounded="lg"
+            style="opacity: 0.95"
+          >
+            <template v-slot:title>
+              <span class="font-weight-black">С подкрепата на:</span>
+            </template>
+
+            <v-carousel
+              hide-delimiters
+              cycle
+              show-arrows="hover"
+              hide-delimiter-background
+              height="200px"
+            >
+              <v-carousel-item v-for="(item, i) in sponsorsItems" :key="i">
+                <a :href="item.url" target="_blank">
+                  <v-img
+                    height="200px"
+                    style="background-color: white"
+                    :src="item.src"
+                  ></v-img>
+                </a>
+              </v-carousel-item>
+            </v-carousel>
+          </v-card>
+        </v-col> -->
+       
       </v-row>
     </v-container>
 
