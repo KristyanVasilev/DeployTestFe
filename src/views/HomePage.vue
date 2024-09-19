@@ -17,7 +17,7 @@ const items = [
 const dialogRules = ref(false);
 const dialogTechRules = ref(false);
 const getImageUrl = (name) => {
-  const path = new URL(`@/assets`, import.meta.url);
+  const path = new URL(import.meta.url);
   if (name == null) return false;
   return `${path}/${name}`;
 };
