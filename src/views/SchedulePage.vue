@@ -1,10 +1,10 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
-import { useMatchDataStore } from '@/stores/matchDataStore.js';
-import { storeToRefs } from 'pinia';
-import { useDisplay } from 'vuetify'
-import { debounce } from 'lodash';
-const { mobile } = useDisplay()
+import { ref, watch, onMounted } from "vue";
+import { useMatchDataStore } from "@/stores/matchDataStore.js";
+import { storeToRefs } from "pinia";
+import { useDisplay } from "vuetify";
+import { debounce } from "lodash";
+const { mobile } = useDisplay();
 const tab = ref(null);
 const teamSearch = ref({
   search: "",
@@ -13,19 +13,35 @@ const teamSearch = ref({
 const nextPagination = ref({ page: 1, itemsPerPage: 10 });
 const pastPagination = ref({ page: 1, itemsPerPage: 10 });
 
-
 const matchDataStore = useMatchDataStore();
-const { nextMatches, pastMatches, totalNextMatches, totalPastMatches  } = storeToRefs(matchDataStore);
+const { nextMatches, pastMatches, totalNextMatches, totalPastMatches } =
+  storeToRefs(matchDataStore);
 // Fetch matches when the component is mounted
 onMounted(async () => {
-  await matchDataStore.fetchNextMatches(teamSearch.value.search, nextPagination.value.page, nextPagination.value.itemsPerPage);
-  await matchDataStore.fetchPastMatches(teamSearch.value.search, pastPagination.value.page, pastPagination.value.itemsPerPage);
+  await matchDataStore.fetchNextMatches(
+    teamSearch.value.search,
+    nextPagination.value.page,
+    nextPagination.value.itemsPerPage
+  );
+  await matchDataStore.fetchPastMatches(
+    teamSearch.value.search,
+    pastPagination.value.page,
+    pastPagination.value.itemsPerPage
+  );
 });
 
 // Debounced search function
 const debouncedFetchMatches = debounce(async () => {
-  await matchDataStore.fetchNextMatches(teamSearch.value.search, nextPagination.value.page, nextPagination.value.itemsPerPage);
-  await matchDataStore.fetchPastMatches(teamSearch.value.search, pastPagination.value.page, pastPagination.value.itemsPerPage);
+  await matchDataStore.fetchNextMatches(
+    teamSearch.value.search,
+    nextPagination.value.page,
+    nextPagination.value.itemsPerPage
+  );
+  await matchDataStore.fetchPastMatches(
+    teamSearch.value.search,
+    pastPagination.value.page,
+    pastPagination.value.itemsPerPage
+  );
 }, 300);
 
 // Watcher for teamSearch to trigger API call on change
@@ -36,14 +52,30 @@ watch(
   }
 );
 // Watch pagination for next matches
-watch(nextPagination, async () => {
-  await matchDataStore.fetchNextMatches(teamSearch.value.search, nextPagination.value.page, nextPagination.value.itemsPerPage);
-},{deep:true});
+watch(
+  nextPagination,
+  async () => {
+    await matchDataStore.fetchNextMatches(
+      teamSearch.value.search,
+      nextPagination.value.page,
+      nextPagination.value.itemsPerPage
+    );
+  },
+  { deep: true }
+);
 
 // Watch pagination for past matches
-watch(pastPagination, async () => {
-  await matchDataStore.fetchPastMatches(teamSearch.value.search, pastPagination.value.page, pastPagination.value.itemsPerPage);
-}, {deep:true});
+watch(
+  pastPagination,
+  async () => {
+    await matchDataStore.fetchPastMatches(
+      teamSearch.value.search,
+      pastPagination.value.page,
+      pastPagination.value.itemsPerPage
+    );
+  },
+  { deep: true }
+);
 const pastMatchesHeaders = [
   {
     align: "start",
@@ -52,11 +84,9 @@ const pastMatchesHeaders = [
     title: "Дата",
   },
   { key: "homeTeamName", title: "Домакин", sortable: false },
- 
+
   { key: "homeTeamGoals", title: "Резултат", sortable: false },
   { key: "awayTeamName", title: "Гост", sortable: false },
-
-
 ];
 const nextMatchesHeaders = [
   {
@@ -66,10 +96,8 @@ const nextMatchesHeaders = [
     title: "Дата",
   },
   { key: "homeTeamName", title: "Домакин", sortable: false },
- 
+
   { key: "awayTeamName", title: "Гост", sortable: false },
-
-
 ];
 const getRowClass = (team) => {
   return "background-color: #1b1b1b;color: #FFFFFF;font-weight:500";
@@ -78,36 +106,35 @@ const getRowClass = (team) => {
 
 <template>
   <div class="base">
-    <v-container fluid >
-          
-          <v-row justify="center mt-12" >
-            <v-col class="v-col-auto">
-              <v-icon icon="mdi-magnify" color="#1b1b1b" class="my-2 pl-6"></v-icon>
-            </v-col>
-            <v-col class="v-col-auto">
-              <v-text-field
-                class="search-field"
-                :loading="loading"
-                density="compact"
-                label="Потърси отбор"
-                variant="solo"
-                hide-details
-                single-line
-                :width="mobile?'300px':'400px'"
-                clearable
-                rounded
-                v-model="teamSearch.search"
-                @click:append-inner="onClick"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-    <v-container fluid  :class="mobile ? 'px-4':'px-10'">
-        <v-tabs fixed-tabs v-model="tab">
-          <v-tab size="small" text="Предстоящи мачове" value="next"></v-tab>
-          <v-tab size="small" text="Изминали мачове" value="past"></v-tab>
-        </v-tabs>
-        <v-tabs-window v-model="tab">
+    <v-container fluid>
+      <v-row justify="center mt-12">
+        <v-col class="v-col-auto">
+          <v-icon icon="mdi-magnify" color="#1b1b1b" class="my-2 pl-6"></v-icon>
+        </v-col>
+        <v-col class="v-col-auto">
+          <v-text-field
+            class="search-field"
+            :loading="loading"
+            density="compact"
+            label="Потърси отбор"
+            variant="solo"
+            hide-details
+            single-line
+            :width="mobile ? '300px' : '400px'"
+            clearable
+            rounded
+            v-model="teamSearch.search"
+            @click:append-inner="onClick"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container fluid :class="mobile ? 'px-4' : 'px-10'">
+      <v-tabs fixed-tabs v-model="tab">
+        <v-tab size="small" text="Предстоящи мачове" value="next"></v-tab>
+        <v-tab size="small" text="Изминали мачове" value="past"></v-tab>
+      </v-tabs>
+      <v-tabs-window v-model="tab">
         <v-tabs-window-item value="next">
           <v-data-table-server
             class="next-matches-table"
@@ -115,7 +142,7 @@ const getRowClass = (team) => {
             :items="nextMatches"
             :items-length="totalNextMatches"
             no-data-text="Не са открити мачове"
-            @update:page="(page) => nextPagination.page = page"
+            @update:page="(page) => (nextPagination.page = page)"
           >
             <template v-slot:item="{ item }">
               <tr :style="getRowClass(item)">
@@ -123,25 +150,39 @@ const getRowClass = (team) => {
                 <td>
                   <span class="d-flex align-center">
                     <img
-                      :src="item.homeTeamLogo || 'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'"
+                      :src="
+                        item.homeTeamLogo ||
+                        'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'
+                      "
                       height="24px"
                       width="24px"
                       class="mr-4"
                     />
-                    <router-link class="team-name" :to="'/teams/' + item.homeTeamId">{{ item.homeTeamName }}</router-link >
+                    <router-link
+                      class="team-name"
+                      :to="'/teams/' + item.homeTeamId"
+                      >{{ item.homeTeamName }}</router-link
+                    >
                   </span>
                 </td>
 
                 <td>
                   <span class="d-flex align-center">
                     <img
-                      :src="item.awayTeamLogo || 'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'"
+                      :src="
+                        item.awayTeamLogo ||
+                        'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'
+                      "
                       height="24px"
                       width="24px"
                       class="mr-4"
                     />
-                   
-                    <router-link class="team-name" :to="'/teams/' + item.awayTeamId">{{ item.awayTeamName }}</router-link >
+
+                    <router-link
+                      class="team-name"
+                      :to="'/teams/' + item.awayTeamId"
+                      >{{ item.awayTeamName }}</router-link
+                    >
                   </span>
                 </td>
               </tr>
@@ -156,8 +197,7 @@ const getRowClass = (team) => {
             :items="pastMatches"
             :items-length="totalPastMatches"
             no-data-text="Не са открити мачове"
-            @update:page="(page) => pastPagination.page = page"
-          
+            @update:page="(page) => (pastPagination.page = page)"
           >
             <template v-slot:item="{ item }">
               <tr :style="getRowClass(item)">
@@ -165,36 +205,47 @@ const getRowClass = (team) => {
                 <td>
                   <span class="d-flex align-center">
                     <img
-                      src="https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg"
+                      :src="
+                        item.awayTeamLogo ||
+                        'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'
+                      "
                       height="24px"
                       width="24px"
                       class="mr-4"
                     />
-                    
-                    <router-link class="team-name" :to="'/teams/' + item.homeTeamId">{{ item.homeTeamName }}</router-link >
+
+                    <router-link
+                      class="team-name"
+                      :to="'/teams/' + item.homeTeamId"
+                      >{{ item.homeTeamName }}</router-link
+                    >
                   </span>
                 </td>
-                
-                
-                <td>{{ item.homeTeamGoals + ' - ' +  item.awayTeamGoals}}</td>
-                
+
+                <td>{{ item.homeTeamGoals + " - " + item.awayTeamGoals }}</td>
+
                 <td>
                   <span class="d-flex align-center">
                     <img
-                      src="https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg"
+                      :src="
+                        item.awayTeamLogo ||
+                        'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'
+                      "
                       height="24px"
                       width="24px"
                       class="mr-4"
                     />
-                    <router-link class="team-name" :to="'/teams/' + item.awayTeamId">{{ item.awayTeamName }}</router-link >
+                    <router-link
+                      class="team-name"
+                      :to="'/teams/' + item.awayTeamId"
+                      >{{ item.awayTeamName }}</router-link
+                    >
                   </span>
                 </td>
-                
               </tr>
             </template>
           </v-data-table-server>
         </v-tabs-window-item>
-
       </v-tabs-window>
     </v-container>
   </div>
@@ -205,7 +256,7 @@ const getRowClass = (team) => {
   background-color: #253C59 !important
   opacity: 0.8
 .v-tab
-  color: #1c1c1c 
+  color: #1c1c1c
 .v-tab--selected
   font-weight: bold
   color: #1c1c1c  !important
@@ -215,7 +266,7 @@ const getRowClass = (team) => {
   text-decoration: none
   color: inherit
 /* Additional style for visited links if needed */
-.team-name:visited 
+.team-name:visited
   color: inherit
   text-decoration: none
 
@@ -230,5 +281,5 @@ const getRowClass = (team) => {
 :deep(.v-data-table-footer__items-per-page)
   display: none !important
 :deep(.v-data-table-footer)
-  padding:5px 4px 
+  padding:5px 4px
 </style>

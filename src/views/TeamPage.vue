@@ -499,6 +499,7 @@ function checkPosition(postionNumber) {
                     <th>Червени Картони</th>
                     <th>Автоголове</th>
                     <th>MVP</th>
+                    <th>Спасяваня</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -512,6 +513,7 @@ function checkPosition(postionNumber) {
                     <td>{{ selectedPlayer.totalStats.redCards }}</td>
                     <td>{{ selectedPlayer.totalStats.ownGoals }}</td>
                     <td>{{ selectedPlayer.totalStats.mvp }}</td>
+                    <td>{{ selectedPlayer.totalStats.keeperSaves }}</td>
                   </tr>
                   <!-- Season Stats Rows -->
                   <tr
@@ -530,6 +532,7 @@ function checkPosition(postionNumber) {
                     <td>{{ season.redCards }}</td>
                     <td>{{ season.ownGoals }}</td>
                     <td>{{ season.mvp }}</td>
+                    <td>{{ selectedPlayer.totalStats.keeperSaves }}</td>
                   </tr>
                 </tbody>
               </v-table>
