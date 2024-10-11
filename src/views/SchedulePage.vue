@@ -14,7 +14,7 @@ const nextPagination = ref({ page: 1, itemsPerPage: 10 });
 const pastPagination = ref({ page: 1, itemsPerPage: 10 });
 
 const matchDataStore = useMatchDataStore();
-const { nextMatches, pastMatches, totalNextMatches, totalPastMatches } =
+const { nextMatches, pastMatches, totalNextMatches, totalPastMatches, nextMatchesLoading, pastMatchesLoading } =
   storeToRefs(matchDataStore);
 // Fetch matches when the component is mounted
 onMounted(async () => {
@@ -142,6 +142,7 @@ const getRowClass = (team) => {
             :items="nextMatches"
             :items-length="totalNextMatches"
             no-data-text="Не са открити мачове"
+            :loading="nextMatchesLoading"
             @update:page="(page) => (nextPagination.page = page)"
           >
             <template v-slot:item="{ item }">
@@ -197,6 +198,7 @@ const getRowClass = (team) => {
             :items="pastMatches"
             :items-length="totalPastMatches"
             no-data-text="Не са открити мачове"
+            :loading="pastMatchesLoading"
             @update:page="(page) => (pastPagination.page = page)"
           >
             <template v-slot:item="{ item }">
@@ -206,7 +208,7 @@ const getRowClass = (team) => {
                   <span class="d-flex align-center">
                     <img
                       :src="
-                        item.awayTeamLogo ||
+                        item.homeTeamLogo ||
                         'https://placeit-img-1-p.cdn.aws.placeit.net/uploads/stage/stage_image/48640/optimized_large_thumb_stage.jpg'
                       "
                       height="24px"

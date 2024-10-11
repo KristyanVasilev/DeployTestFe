@@ -6,7 +6,7 @@ const { mobile } = useDisplay();
 
 
 const matchDataStore = useMatchDataStore();
-const { standings } = storeToRefs(matchDataStore);
+const { standings, standingsLoading } = storeToRefs(matchDataStore);
 onMounted(async () => {
   await matchDataStore.fetchSeasonStandings();
   matchDataStore.standings = matchDataStore.standings.map((team, index) => ({
@@ -63,6 +63,7 @@ const getPositionClass = (team) => {
             hide-default-footer
             :headers="headers"
             :items="standings"
+            :loading="standingsLoading"
           >
             <template v-slot:item="{ item }">
               <tr :style="getRowClass(item)">
