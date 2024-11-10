@@ -32,6 +32,13 @@ const { mobile } = useDisplay()
         @click="$emit('update:drawer')"
       ></v-list-item>
       <v-list-item
+        prepend-icon="mdi-soccer"
+        title="Индивидуално класиране"
+        value="individual-ranking"
+        to="/individual-ranking"
+        @click="$emit('update:drawer')"
+      ></v-list-item>
+      <v-list-item
         prepend-icon="mdi-calendar"
         title="Програма"
         value="schedule"

@@ -47,6 +47,12 @@ const drawer = ref(false);
           to="/ranking"
         ></v-list-item>
         <v-list-item
+          prepend-icon="mdi-trophy"
+          title="Индивидуално класиране"
+          value="individual-ranking"
+          to="/individual-ranking"
+        ></v-list-item>
+        <v-list-item
           prepend-icon="mdi-calendar"
           title="Програма"
           value="schedule"
