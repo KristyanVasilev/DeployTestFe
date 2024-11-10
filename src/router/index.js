@@ -10,6 +10,7 @@ import { useAlertStore } from '@/stores/alertStore.js';
 
 import HomePage from '@/views/HomePage.vue'
 import RankingPage from '@/views/RankingPage.vue'
+import IndividualRankingPage from '@/views/IndividualRankingPage.vue'
 import SchedulePage from '@/views/SchedulePage.vue'
 import TeamsPage from '@/views/TeamsPage.vue'
 import TeamPage from '@/views/TeamPage.vue'
@@ -28,6 +29,11 @@ const router = createRouter({
       path: '/ranking',
       name: 'ranking',
       component: RankingPage,
+    },
+    {
+      path: '/individual-ranking',
+      name: 'individual-ranking',
+      component: IndividualRankingPage,
     },
     {
       path: '/schedule',

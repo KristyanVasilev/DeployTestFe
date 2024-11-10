@@ -18,7 +18,13 @@ export const useMatchDataStore = defineStore({
     team:[],
     teamLoading:true,
     standings:[],
-    standingsLoading: true
+    standingsLoading: true,
+    goalscorers: [],
+    goalscorersLoading: true,
+    totalGoalscorers: [],
+    keepers: [],
+    keepersLoading: true,
+    totalKeepers: [],
   }),
   actions: {
     async fetchNextMatches(searchQuery, page = 1, perPage = 10) {
@@ -121,6 +127,48 @@ export const useMatchDataStore = defineStore({
           this.standingsLoading = false;
           alertStore.error("Failed to fetch season standings");
         }
-      },
+    },
+    async fetchGoalScorers(searchQuery, page = 1, perPage = 10) {
+      const alertStore = useAlertStore();
+      this.goalscorersLoading = true;
+      try {
+        const response = await axios.get(`https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/seasons/goalscorers`, {
+          params: 
+          { 
+            Search: searchQuery,
+            Page: page,
+            PerPage: perPage
+          },
+          headers: { 'accept': 'text/plain' }
+        });
+        this.goalscorers = response.data.topGoalScorers;
+        this.totalGoalscorers = response.data.playersCount;
+        this.goalscorersLoading = false;
+      } catch (error) {
+        this.goalscorersLoading = false;
+        alertStore.error("Failed to fetch goalscorers");
+      }
+    },
+    async fetchKeepers(searchQuery, page = 1, perPage = 10) {
+      const alertStore = useAlertStore();
+      this.keepersLoading = true;
+      try {
+        const response = await axios.get(`https://matchproapi-b0bgbtaecxeggyg7.eastus-01.azurewebsites.net/api/v1/seasons/topkeepers`, {
+          params: 
+          { 
+            Search: searchQuery,
+            Page: page,
+            PerPage: perPage
+          },
+          headers: { 'accept': 'text/plain' }
+        });
+        this.keepers = response.data.topKeepers;
+        this.totalKeepers = response.data.playersCount;
+        this.keepersLoading = false;
+      } catch (error) {
+        this.keepersLoading = false;
+        alertStore.error("Failed to fetch keepers");
+      }
+    },
   }
 });
